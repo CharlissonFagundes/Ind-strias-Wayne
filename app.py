@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask, request, redirect, url_for, flash, render_template
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-import bcrypt
+from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+import bcrypt
 
 # Inicialização do Flask
 app = Flask(__name__)

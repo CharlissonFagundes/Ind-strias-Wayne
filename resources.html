@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Gerenciar Recursos - Indústrias Wayne{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="mb-4">Gerenciar Recursos</h2>
+        
+        <!-- Formulário para adicionar recurso -->
+        {% if current_user.role in ['gerente', 'admin_seguranca'] %}
+        <h3>Adicionar Novo Recurso</h3>
+        <form method="POST" action="{{ url_for('manage_resources') }}">
+            <div class="mb-3">
+                <label for="type" class="form-label">Tipo</label>
+                <select class="form-select" id="type" name="type" required>
+                    <option value="" disabled selected>Selecione o tipo</option>
+                    <option value="equipamento">Equipamento</option>
+                    <option value="veiculo">Veículo</option>
+                    <option value="dispositivo_seguranca">Dispositivo de Segurança</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantidade</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descrição</label>
+                <textarea class="form-control" id="description" name="description" rows="4"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar Recurso</button>
+        </form>
+        {% endif %}
+
+        <!-- Lista de recursos -->
+        <h3 class="mt-5">Recursos Cadastrados</h3>
+        {% if resources %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tipo</th>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                    <th>Descrição</th>
+                    <th>Responsável</th>
+                    {% if current_user.role == 'admin_seguranca' %}
+                    <th>Ações</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for resource in resources %}
+                <tr>
+                    <td>{{ resource.type }}</td>
+                    <td>{{ resource.name }}</td>
+                    <td>{{ resource.quantity }}</td>
+                    <td>{{ resource.description or 'N/A' }}</td>
+                    <td>{{ resource.responsible.username if resource.responsible else 'N/A' }}</td>
+                    {% if current_user.role == 'admin_seguranca' %}
+                    <td>
+                        <a href="{{ url_for('edit_resource', resource_id=resource.id) }}" class="btn btn-sm btn-warning">Editar</a>
+                        <form action="{{ url_for('delete_resource', resource_id=resource.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este recurso?');">
+                            <button type="submit" class="btn btn-sm btn-danger">Excluir</button>
+                        </form>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>Nenhum recurso cadastrado.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

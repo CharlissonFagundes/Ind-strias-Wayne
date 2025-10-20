@@ -1,0 +1,28 @@
+<!-- access_result.html -->
+{% extends 'base.html' %}
+
+{% block title %}Resultado de Acesso - Indústrias Wayne{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <h2 class="text-center mb-4">Resultado de Acesso</h2>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ area.name }}</h5>
+                <p class="card-text">{{ area.description }}</p>
+                {% if authorized %}
+                <div class="alert alert-success" role="alert">
+                    Acesso autorizado!
+                </div>
+                {% else %}
+                <div class="alert alert-danger" role="alert">
+                    Acesso negado: Você não tem permissão para esta área.
+                </div>
+                {% endif %}
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Voltar ao Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

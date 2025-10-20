@@ -1,0 +1,36 @@
+<!-- edit_resource.html -->
+{% extends 'base.html' %}
+
+{% block title %}Editar Recurso - Indústrias Wayne{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2 class="mb-4">Editar Recurso</h2>
+        <form method="POST" action="{{ url_for('edit_resource', resource_id=resource.id) }}">
+            <div class="mb-3">
+                <label for="type" class="form-label">Tipo</label>
+                <select class="form-select" id="type" name="type" required>
+                    <option value="equipamento" {% if resource.type == 'equipamento' %}selected{% endif %}>Equipamento</option>
+                    <option value="veiculo" {% if resource.type == 'veiculo' %}selected{% endif %}>Veículo</option>
+                    <option value="dispositivo_seguranca" {% if resource.type == 'dispositivo_seguranca' %}selected{% endif %}>Dispositivo de Segurança</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="name" class="form-label">Nome</label>
+                <input type="text" class="form-control" id="name" name="name" value="{{ resource.name }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantidade</label>
+                <input type="number" class="form-control" id="quantity" name="quantity" value="{{ resource.quantity }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Descrição</label>
+                <textarea class="form-control" id="description" name="description" rows="4">{{ resource.description }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Atualizar Recurso</button>
+            <a href="{{ url_for('manage_resources') }}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+</div>
+{% endblock %}
